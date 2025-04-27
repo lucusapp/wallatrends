@@ -4,7 +4,7 @@ import path from "path";
 
 const searchTerm = process.argv[2];
 
-async function scrapeWallapop(query) {
+export async function scrapeWallapop(query) {
     console.log(`🔍 Buscando "${query}" en Wallapop...`);
 
     const browser = await puppeteer.launch({ headless: "new" });
@@ -33,8 +33,11 @@ async function scrapeWallapop(query) {
     const filePath = path.resolve(`./data/${query}_scraped.json`);
     fs.writeFileSync(filePath, JSON.stringify(products, null, 2), "utf-8");
     console.log(`✅ Guardado en ${filePath} con ${products.length} productos.`);
-
+    
     await browser.close();
+    
+    return products
+
 }
 
 scrapeWallapop(searchTerm).catch(err => {
